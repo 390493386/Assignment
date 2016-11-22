@@ -1,0 +1,119 @@
+﻿@using Assignment.Core.Domain
+@model List<User>
+@{
+    ViewBag.Title = "人员状态一览";
+    DateTime fromDate = (DateTime)ViewBag.FromDate;
+}
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-6">
+        <span style="width:20px;background-color:#e6f5c3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;空闲
+        <span>&nbsp;|&nbsp;</span>
+        <span style="width:20px;background-color:#ee914b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;忙碌
+    </div>
+    <div class="col-md-offset-4 col-md-2" style="text-align:right">
+        @if (fromDate > DateTime.Today)
+        {
+            <a title="后退一周" href="@Url.Action("Index", "Assignment", routeValues: new { from = fromDate.AddDays(-7) })"><span class="glyphicon glyphicon-fast-backward"></span></a>
+            <a title="后退一天" href="@Url.Action("Index", "Assignment", routeValues: new { from = fromDate.AddDays(-1) })"><span class="glyphicon glyphicon-step-backward"></span></a>
+        }
+        else
+        {
+            <span class="glyphicon glyphicon-fast-backward"></span>
+            <span class="glyphicon glyphicon-step-backward"></span>
+        }
+        <a title="前进一天" href="@Url.Action("Index", "Assignment", routeValues: new { from = fromDate.AddDays(1) })"><span class="glyphicon glyphicon-step-forward"></span></a>
+        <a title="前进一周" href="@Url.Action("Index", "Assignment", routeValues: new { from = fromDate.AddDays(7) })"><span class="glyphicon glyphicon-fast-forward"></span></a>
+    </div>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            @{
+                for (int i = 0; i < 7; ++i)
+                {
+                    DateTime cur = fromDate.AddDays(i);
+                    string weekStr = null;
+                    switch (cur.DayOfWeek)
+                    {
+                        case DayOfWeek.Monday:
+                            weekStr = "周一";
+                            break;
+                        case DayOfWeek.Tuesday:
+                            weekStr = "周二";
+                            break;
+                        case DayOfWeek.Wednesday:
+                            weekStr = "周三";
+                            break;
+                        case DayOfWeek.Thursday:
+                            weekStr = "周四";
+                            break;
+                        case DayOfWeek.Friday:
+                            weekStr = "周五";
+                            break;
+                        case DayOfWeek.Saturday:
+                            weekStr = "周六";
+                            break;
+                        case DayOfWeek.Sunday:
+                            weekStr = "周日";
+                            break;
+                    }
+
+                    <th>@cur.ToShortDateString() (@weekStr)</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (User user in Model)
+        {
+            if (user.AssignedTasks != null && user.AssignedTasks.Count > 0)
+            {
+                for (int i = 0; i < user.AssignedTasks.Count; ++i)
+                {
+                    UserTask userTask = user.AssignedTasks.ElementAt(i);
+                    Task task = userTask.Task;
+                    int daysBetweenFromDateAndExpBeginDate = (task.ExpBeginDate.Value - fromDate).Days;
+
+                    int freeDaysBefore = daysBetweenFromDateAndExpBeginDate > 0 ? daysBetweenFromDateAndExpBeginDate : 0;
+                    int taskShowDays = (task.ExpEndDate.Value - fromDate).Days - freeDaysBefore + 1;
+                    <tr>
+                        @if (i == 0)
+                        {
+                            <td rowspan="@user.AssignedTasks.Count">@Html.ActionLink(user.UserName, "Details", routeValues: new { userId = user.Id })</td>
+                        }
+                        @{
+                            if (freeDaysBefore > 0)
+                            {
+                                <td colspan="@freeDaysBefore" style="background-color:#e6f5c3;text-align:center">空闲</td>
+                            }
+                            if (freeDaysBefore + taskShowDays >= 7)
+                            {
+                                <td colspan="@(7 - freeDaysBefore)" style="background-color:#ee914b;text-align:center">
+                                    @Html.ActionLink(task.Name, "Show", "Task", routeValues: new { id = task.Id }, htmlAttributes: null)
+                                </td>
+                            }
+                            else
+                            {
+                                <td colspan="@taskShowDays" style="background-color:#ee914b;text-align:center">
+                                    @Html.ActionLink(task.Name, "Show", "Task", routeValues: new { id = task.Id }, htmlAttributes: null)
+                                </td>
+                                <td colspan="@(7 - taskShowDays - freeDaysBefore)" style="background-color:#e6f5c3;text-align:center">空闲</td>
+                            }
+                        }
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td>@user.UserName</td><td colspan="7" style="background-color:#e6f5c3;text-align:center">空闲</td></tr>
+            }
+        }
+    </tbody>
+</table>
+@if (ViewBag.IsAdmin)
+{
+    @Html.ActionLink("添加人员", "Add", "User", routeValues: null, htmlAttributes: new { @class = "btn btn-primary" })
+}
+

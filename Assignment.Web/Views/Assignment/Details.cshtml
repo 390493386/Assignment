@@ -1,0 +1,80 @@
+﻿@using Assignment.Domain
+@model List<Task>
+@{
+    ViewBag.Title = "人员状态详情";
+}
+
+@if (ViewBag.QueryUser != null)
+{
+    if (ViewBag.IsAdmin || ViewBag.IsOwner)
+    {
+        <h2>@ViewBag.QueryUser.Name 的任务列表</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>任务编号</th>
+                    <th>任务名称</th>
+                    <th>计划开始日期</th>
+                    <th>计划结束日期</th>
+                    <th>优先级</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null || Model.Count > 0)
+                {
+                    foreach (Task task in Model)
+                    {
+                        <tr>
+                            <td>@task.Number</td>
+                            <td>
+                                @if (task.Name.Length > 10)
+                                {
+                                    <span title="@task.Name">@task.Name.Substring(0, 8)...</span>
+                                }
+                                else
+                                {
+                                    @task.Name
+                                }
+                            </td>
+                            <td>@task.ExpBeginDate</td>
+                            <td>@task.ExpEndDate</td>
+                            <td>@task.PriorityText</td>
+                            <td>@task.StatusText</td>
+                            <td style="text-align:center">
+                                @if (ViewBag.IsOwner)
+                                {
+                                    if (task.Status == TaskStatus.Assigned)
+                                    {
+                                        <a href="@Url.Action("ProcessTask", routeValues: new { userId = ViewBag.QueryUser.Id, taskId = task.Id, act="P" })" title="开始执行"><span class="glyphicon glyphicon-play"></span></a>
+                                        <span class="glyphicon glyphicon-stop"></span>
+                                    }
+                                    else if (task.Status == TaskStatus.Processing)
+                                    {
+                                        <span class="glyphicon glyphicon-play"></span>
+                                        <a href="@Url.Action("ProcessTask", routeValues: new { userId = ViewBag.QueryUser.Id, taskId = task.Id, act="E" })" title="结束执行"><span class="glyphicon glyphicon-stop"></span></a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="align-content:center">无任务</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2>您当前无权查看 @ViewBag.QueryUser.Name 的任务列表，请联系管理员</h2>
+    }
+}
+else
+{
+    <h2>用户未找到</h2>
+}

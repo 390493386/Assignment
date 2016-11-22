@@ -3,3 +3,12 @@
 ################################################################################
 
 /.vs/config
+/Assignment.Core/obj/Debug
+/Assignment.Core/bin/Debug
+/Assignment.Data/obj/Debug
+/Assignment.Data/bin/Debug
+/Assignment.Services/obj/Debug
+/Assignment.Services/bin/Debug
+/Assignment.Web/obj/Debug
+/Assignment.Web/bin
+/packages

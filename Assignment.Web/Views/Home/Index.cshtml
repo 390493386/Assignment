@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "主页";
+}
+
+<div class="jumbotron">
+    <h1>Assignment</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>人员状态预览</h2>
+        <p>查看所管理的人员状态，合理分配任务</p>
+        <p><a href="@Url.Action("Index","Assignment", routeValues: null)" class="btn btn-default">查看 <span class="glyphicon glyphicon-eye-open"></span></a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>任务管理</h2>
+        <p>管理任务，分配任务</p>
+        <p><a href="@Url.Action("Index","Task", routeValues: null)" class="btn btn-default">查看 <span class="glyphicon glyphicon-eye-open"></span></a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>项目管理</h2>
+        <p>项目管理，项目人员组织架构</p>
+        <p><a href="@Url.Action("Index","Project", routeValues: null)" class="btn btn-default">查看 <span class="glyphicon glyphicon-eye-open"></span></a></p>
+    </div>
+</div>
