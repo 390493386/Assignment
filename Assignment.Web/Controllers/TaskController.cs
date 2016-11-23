@@ -89,7 +89,7 @@ namespace Assignment.Web.Controllers
             task.Number = model.Number;
             task.Name = model.Name;
             task.ExpBeginDate = model.ExpBeginDate.Value;
-            task.ExpEndDate = model.ExpEndDate.Value.AddMinutes(1439);
+            task.ExpEndDate = model.ExpEndDate.Value;
             task.Priority = model.Priority;
             task.Description = model.Desription;
             TaskService rep = new TaskService();

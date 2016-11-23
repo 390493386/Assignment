@@ -109,6 +109,7 @@ namespace Assignment.Services
                             join t in _taskRepository.Table on ut.TaskId equals t.Id
                             where ut.UserId == userId && t.ExpBeginDate >= fromDate && t.ExpEndDate < toDate
                             select ut;
+            var lst = resultSet.ToList();
             return resultSet.ToList();
         }
         #endregion

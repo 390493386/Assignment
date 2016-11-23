@@ -29,14 +29,14 @@
             <div class="form-group col-md-6">
                 @Html.LabelFor(m => m.ExpBeginDate, new { @class = "col-md-4 control-label" })
                 <div class="col-md-8">
-                    @Html.TextBoxFor(m => m.ExpBeginDate, new { @class = "form-control date-picker", @readonly = true })
+                    @Html.TextBoxFor(m => m.ExpBeginDate, new { @class = "form-control formated-datetime-picker", @readonly = true, @data_format = "yyyy-mm-dd 00:00:00" })
                     @Html.ValidationMessageFor(m => m.ExpBeginDate, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group col-md-6">
                 @Html.LabelFor(m => m.ExpEndDate, new { @class = "col-md-4 control-label" })
                 <div class="col-md-8">
-                    @Html.TextBoxFor(m => m.ExpEndDate, new { @class = "form-control date-picker", @readonly = true })
+                    @Html.TextBoxFor(m => m.ExpEndDate, new { @class = "form-control formated-datetime-picker", @readonly = true, @data_format = "yyyy-mm-dd 23:59:59" })
                     @Html.ValidationMessageFor(m => m.ExpEndDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="保存" class="btn btn-primary" />
-                    @Html.ActionLink("返回", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-default" })
+                    <a class="btn btn-default" onclick="javascript: history.back();">返回</a>
                 </div>
             </div>
         }

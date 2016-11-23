@@ -27,7 +27,7 @@ namespace Assignment.Data
         }
     }
 
-    public class AssignmentDbInitializer : DropCreateDatabaseAlways<AssignmentDbContext>
+    public class AssignmentDbInitializer : DropCreateDatabaseIfModelChanges<AssignmentDbContext>
     {
         protected override void Seed(AssignmentDbContext context)
         {

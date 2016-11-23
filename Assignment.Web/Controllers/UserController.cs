@@ -56,7 +56,7 @@ namespace Assignment.Web.Controllers
             var identity = user.CreateIdentity();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = model.RememberMe }, identity);
-            return RedirectToAction("Index", "Home");
+            return Redirect(returnUrl);
         }
 
         //

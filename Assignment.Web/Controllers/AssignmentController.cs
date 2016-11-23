@@ -35,7 +35,7 @@ namespace Assignment.Web.Controllers
             TaskService tService = new TaskService();
             foreach (var user in usersWithTasks)
             {
-                user.AssignedTasks = tService.GetUserTasksForUser(user.Id, fromDate: fromDate, toDate: endDate);
+                tService.GetUserTasksForUser(user.Id, fromDate: fromDate, toDate: endDate);
             }
             ViewBag.FromDate = fromDate;
             var r = usersWithTasks.ToList();
